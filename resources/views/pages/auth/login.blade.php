@@ -1,59 +1,103 @@
+
 <x-layouts::auth :title="__('Log in')">
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
+    <div style="display: flex; flex-direction: column; gap: 24px;">
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
+        <div style="text-align: center;">
+            <h1 style="font-size: 26px; font-weight: 700; color: #493640; margin: 0;">
+                Welcome Back! ♡
+            </h1>
+            <p style="font-size: 14px; color: #a98796; margin-top: 8px;">
+                Log in to your SUARAQ account
+            </p>
+        </div>
 
-        <x-passkey-verify />
+        <x-auth-session-status
+            class="text-center"
+            :status="session('status')"
+        />
 
-        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
+        <form method="POST" action="{{ route('login.store') }}"
+              style="display: flex; flex-direction: column; gap: 20px;">
             @csrf
 
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                :value="old('email')"
-                type="email"
-                required
-                autofocus
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
+            <div>
+                <label style="display: block; margin-bottom: 9px; font-size: 14px; font-weight: 600; color: #493640;">
+                    Email Address
+                </label>
 
-            <!-- Password -->
-            <div class="relative">
-                <flux:input
-                    name="password"
-                    :label="__('Password')"
+                <input
+                    type="email"
+                    name="email"
+                    value="{{ old('email') }}"
+                    placeholder="email@example.com"
+                    required
+                    autofocus
+                    autocomplete="email"
+                    style="width: 100%; padding: 14px; border: 1px solid #f3dce6; border-radius: 12px; background: #fffafd; outline: none;"
+                >
+
+                @error('email')
+                    <p style="color: #dc5555; font-size: 12px; margin-top: 5px;">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 9px;">
+                    <label style="font-size: 14px; font-weight: 600; color: #493640;">
+                        Password
+                    </label>
+
+                    @if (Route::has('password.request'))
+                        <a href="{{ route('password.request') }}"
+                           wire:navigate
+                           style="font-size: 12px; color: #d9799d; text-decoration: none;">
+                            Forgot password?
+                        </a>
+                    @endif
+                </div>
+
+                <input
                     type="password"
+                    name="password"
+                    placeholder="Enter your password"
                     required
                     autocomplete="current-password"
-                    :placeholder="__('Password')"
-                    viewable
-                />
+                    style="width: 100%; padding: 14px; border: 1px solid #f3dce6; border-radius: 12px; background: #fffafd; outline: none;"
+                >
 
-                @if (Route::has('password.request'))
-                    <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
-                        {{ __('Forgot your password?') }}
-                    </flux:link>
-                @endif
+                @error('password')
+                    <p style="color: #dc5555; font-size: 12px; margin-top: 5px;">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
 
-            <!-- Remember Me -->
-            <flux:checkbox name="remember" :label="__('Remember me')" :checked="old('remember')" />
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #806d77;">
+                <input type="checkbox" name="remember" value="1"
+                    {{ old('remember') ? 'checked' : '' }}>
+                Remember me
+            </label>
 
-            <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
-                    {{ __('Log in') }}
-                </flux:button>
-            </div>
+            <button
+                type="submit"
+                data-test="login-button"
+                style="width: 100%; padding: 15px; border: none; border-radius: 12px; background-color: #df7da1; color: white; font-size: 15px; font-weight: 700; cursor: pointer;"
+            >
+                Log in to SUARAQ ♡
+            </button>
         </form>
 
-        <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Don\'t have an account?') }}</span>
-            <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
+        <div style="text-align: center; font-size: 13px; color: #806d77;">
+            Don't have an account?
+
+            <a href="{{ route('register') }}"
+               wire:navigate
+               style="color: #d9799d; font-weight: 700; text-decoration: none;">
+                Sign up
+            </a>
         </div>
+
     </div>
 </x-layouts::auth>

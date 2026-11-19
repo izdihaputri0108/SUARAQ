@@ -1,29 +1,139 @@
+
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
-    <head>
-        @include('partials.head')
-    </head>
-    <body class="min-h-screen bg-white antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
-        <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-            <div class="flex w-full max-w-sm flex-col gap-2">
-                <a href="{{ route('home') }}" class="flex flex-col items-center gap-2 font-medium" wire:navigate>
-                    <span class="flex h-9 w-9 mb-1 items-center justify-center rounded-md">
-                        <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" />
-                    </span>
-                    <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    @include('partials.head')
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DM Sans', sans-serif;
+            background: #fff7fa;
+            color: #493640;
+        }
+
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 45px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-decoration {
+            position: fixed;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: #f9dce8;
+            opacity: .55;
+            pointer-events: none;
+        }
+
+        .decoration-one {
+            top: -150px;
+            left: -100px;
+        }
+
+        .decoration-two {
+            bottom: -170px;
+            right: -100px;
+            background: #f5cbdc;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 440px;
+            position: relative;
+            z-index: 1;
+            margin: auto 0;
+        }
+
+        .auth-brand {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .auth-logo {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            color: #df7da1;
+        }
+
+        .auth-tagline {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #a98796;
+            margin-top: 3px;
+        }
+
+        .auth-card {
+            background: #ffffff;
+            padding: 36px;
+            border: 1px solid #f5dce6;
+            border-radius: 24px;
+            box-shadow: 0 15px 45px rgba(191, 117, 148, .10);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 13px;
+            color: #a98796;
+        }
+
+        @media (max-width: 480px) {
+            .auth-page {
+                padding: 30px 16px;
+            }
+
+            .auth-card {
+                padding: 26px 20px;
+            }
+
+            .auth-logo {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="auth-page">
+        <div class="auth-decoration decoration-one"></div>
+        <div class="auth-decoration decoration-two"></div>
+
+        <div class="auth-container">
+            <div class="auth-brand">
+                <a href="{{ route('home') }}" style="text-decoration: none;">
+                    <div class="auth-logo">SUARAQ.</div>
+                    <div class="auth-tagline">YOUR SPACE, YOUR VOICE ♡</div>
                 </a>
-                <div class="flex flex-col gap-6">
-                    {{ $slot }}
-                </div>
+            </div>
+
+            <div class="auth-card">
+                {{ $slot }}
+            </div>
+
+            <div class="auth-footer">
+                A little space for every voice to be heard ♡
             </div>
         </div>
+    </main>
 
-        @persist('toast')
-            <flux:toast.group>
-                <flux:toast />
-            </flux:toast.group>
-        @endpersist
+    @persist('toast')
+        <flux:toast.group>
+            <flux:toast />
+        </flux:toast.group>
+    @endpersist
 
-        @fluxScripts
-    </body>
+    @fluxScripts
+</body>
 </html>

@@ -1,101 +1,165 @@
+
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
-    <head>
-        @include('partials.head')
-    </head>
-    <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <flux:sidebar sticky collapsible="mobile" class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
-            <flux:sidebar.header>
-                <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
-                <flux:sidebar.collapse class="lg:hidden" />
-            </flux:sidebar.header>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    @include('partials.head')
 
-            <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Platform')" class="grid">
-                    <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
-                    </flux:sidebar.item>
-                </flux:sidebar.group>
-            </flux:sidebar.nav>
+    <style>
+        :root {
+            --suraq-pink: #df7da1;
+            --suraq-light: #fff6fa;
+            --suraq-border: #f5dce6;
+            --suraq-text: #493640;
+        }
 
-            <flux:spacer />
+        body {
+            background: var(--suraq-light) !important;
+            color: var(--suraq-text);
+        }
 
-            <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
+        .suraq-sidebar {
+            background: #ffffff !important;
+            border-right: 1px solid var(--suraq-border) !important;
+        }
+
+        .suraq-brand {
+            color: var(--suraq-pink);
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .suraq-tagline {
+            color: #a98796;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+        }
+
+        main {
+            min-height: 100vh;
+            background: var(--suraq-light);
+            padding: 24px !important;
+        }
+
+        @media (max-width: 640px) {
+            main {
+                padding: 14px !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <!-- SIDEBAR -->
+    <flux:sidebar sticky collapsible="mobile"
+        class="suraq-sidebar border-e">
+
+        <flux:sidebar.header>
+            <a href="{{ route('home') }}" wire:navigate class="block px-2 py-3">
+                <div class="suraq-brand">SUARAQ.</div>
+                <div class="suraq-tagline mt-1">
+                    YOUR SPACE, YOUR VOICE ♡
+                </div>
+            </a>
+
+            <flux:sidebar.collapse class="lg:hidden" />
+        </flux:sidebar.header>
+
+        <!-- MENU -->
+        <flux:sidebar.nav>
+            <flux:sidebar.group heading="MENU UTAMA" class="grid">
+
+                <flux:sidebar.item
+                    icon="home"
+                    :href="route('dashboard')"
+                    :current="request()->routeIs('dashboard')"
+                    wire:navigate>
+                    Dashboard
                 </flux:sidebar.item>
 
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                    {{ __('Documentation') }}
+                <flux:sidebar.item
+                    icon="home"
+                    :href="route('home')"
+                    :current="request()->routeIs('home')"
+                    wire:navigate>
+                    Home
                 </flux:sidebar.item>
-            </flux:sidebar.nav>
 
-            <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
-        </flux:sidebar>
+                <flux:sidebar.item icon="magnifying-glass" href="#">
+                    Explore
+                </flux:sidebar.item>
 
-        <!-- Mobile User Menu -->
-        <flux:header class="lg:hidden">
-            <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
+                <flux:sidebar.item icon="plus-circle" href="#">
+                    Create Menfess
+                </flux:sidebar.item>
 
-            <flux:spacer />
+                <flux:sidebar.item icon="heart" href="#">
+                    My Menfess
+                </flux:sidebar.item>
 
-            <flux:dropdown position="top" align="end">
-                <flux:profile
-                    :initials="auth()->user()->initials()"
-                    icon-trailing="chevron-down"
-                />
+                <flux:sidebar.item icon="bell" href="#">
+                    Notifications
+                </flux:sidebar.item>
 
-                <flux:menu>
-                    <flux:menu.radio.group>
-                        <div class="p-0 text-sm font-normal">
-                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <flux:avatar
-                                    :name="auth()->user()->name"
-                                    :initials="auth()->user()->initials()"
-                                />
+                <flux:sidebar.item
+                    icon="user"
+                    :href="route('profile.edit')"
+                    :current="request()->routeIs('profile.*')"
+                    wire:navigate>
+                    My Profile
+                </flux:sidebar.item>
 
-                                <div class="grid flex-1 text-start text-sm leading-tight">
-                                    <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
-                                    <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
-                                </div>
-                            </div>
-                        </div>
-                    </flux:menu.radio.group>
+            </flux:sidebar.group>
+        </flux:sidebar.nav>
 
-                    <flux:menu.separator />
+        <flux:spacer />
 
-                    <flux:menu.radio.group>
-                        <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
-                            {{ __('Settings') }}
-                        </flux:menu.item>
-                    </flux:menu.radio.group>
+        <!-- USER PROFILE -->
+        <div class="border-t border-pink-100 px-3 py-4">
+            <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-pink-100 text-xl">
+                    🌷
+                </div>
 
-                    <flux:menu.separator />
+                <div class="min-w-0 flex-1">
+                    <p class="truncate text-sm font-bold text-gray-800">
+                        {{ auth()->user()->name }}
+                    </p>
+                    <p class="text-xs text-gray-400">
+                        Welcome to SUARAQ
+                    </p>
+                </div>
+            </div>
 
-                    <form method="POST" action="{{ route('logout') }}" class="w-full">
-                        @csrf
-                        <flux:menu.item
-                            as="button"
-                            type="submit"
-                            icon="arrow-right-start-on-rectangle"
-                            class="w-full cursor-pointer"
-                            data-test="logout-button"
-                        >
-                            {{ __('Log out') }}
-                        </flux:menu.item>
-                    </form>
-                </flux:menu>
-            </flux:dropdown>
-        </flux:header>
+            <form method="POST" action="{{ route('logout') }}" class="mt-4">
+                @csrf
+                <button type="submit"
+                    class="w-full rounded-xl border border-pink-100 px-3 py-2 text-left text-sm font-medium text-pink-600 hover:bg-pink-50">
+                    Log out
+                </button>
+            </form>
+        </div>
 
-        {{ $slot }}
+    </flux:sidebar>
 
-        @persist('toast')
-            <flux:toast.group>
-                <flux:toast />
-            </flux:toast.group>
-        @endpersist
+    <!-- MOBILE HEADER -->
+    <flux:header class="lg:hidden bg-white">
+        <flux:sidebar.toggle icon="bars-2" inset="left" />
+        <flux:spacer />
+        <span class="font-bold text-pink-500">SUARAQ.</span>
+    </flux:header>
 
-        @fluxScripts
-    </body>
+    <!-- SLOT: jangan tambahkan flux:main lagi di sini -->
+    {{ $slot }}
+
+    @persist('toast')
+        <flux:toast.group>
+            <flux:toast />
+        </flux:toast.group>
+    @endpersist
+
+    @fluxScripts
+
+</body>
 </html>
