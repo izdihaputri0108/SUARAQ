@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Menfess;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class MenfessController extends Controller
 {
     /**
      * Menampilkan daftar menfess untuk moderasi.
      */
-    public function index()
+    public function index(): View
     {
         $menfesses = Menfess::with('user')
             ->where('status', 'pending')
@@ -23,7 +25,7 @@ class MenfessController extends Controller
     /**
      * Menyetujui menfess.
      */
-    public function approve(Menfess $menfess)
+    public function approve(Menfess $menfess): RedirectResponse
     {
         $menfess->update([
             'status' => 'approved',
@@ -37,7 +39,7 @@ class MenfessController extends Controller
     /**
      * Menolak menfess.
      */
-    public function reject(Menfess $menfess)
+    public function reject(Menfess $menfess): RedirectResponse
     {
         $menfess->update([
             'status' => 'rejected',
@@ -51,7 +53,7 @@ class MenfessController extends Controller
     /**
      * Menghapus menfess.
      */
-    public function destroy(Menfess $menfess)
+    public function destroy(Menfess $menfess): RedirectResponse
     {
         $menfess->delete();
 

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menfess;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class MenfessController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         // Memeriksa data yang dikirim dari form
         $validated = $request->validate([
