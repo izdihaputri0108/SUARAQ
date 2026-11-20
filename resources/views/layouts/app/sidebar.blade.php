@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -56,7 +55,7 @@
         class="suraq-sidebar border-e">
 
         <flux:sidebar.header>
-            <a href="{{ route('home') }}" wire:navigate class="block px-2 py-3">
+            <a href="{{ route('community.home') }}" wire:navigate class="block px-2 py-3">
                 <div class="suraq-brand">SUARAQ.</div>
                 <div class="suraq-tagline mt-1">
                     YOUR SPACE, YOUR VOICE ♡
@@ -80,8 +79,8 @@
 
                 <flux:sidebar.item
                     icon="home"
-                    :href="route('home')"
-                    :current="request()->routeIs('home')"
+                    :href="route('community.home')"
+                    :current="request()->routeIs('community.home')"
                     wire:navigate>
                     Home
                 </flux:sidebar.item>
@@ -90,7 +89,11 @@
                     Explore
                 </flux:sidebar.item>
 
-                <flux:sidebar.item icon="plus-circle" href="#">
+                <flux:sidebar.item
+                    icon="plus-circle"
+                    :href="route('menfesses.create')"
+                    :current="request()->routeIs('menfesses.create')"
+                    wire:navigate>
                     Create Menfess
                 </flux:sidebar.item>
 
@@ -150,7 +153,7 @@
         <span class="font-bold text-pink-500">SUARAQ.</span>
     </flux:header>
 
-    <!-- SLOT: jangan tambahkan flux:main lagi di sini -->
+    <!-- SLOT -->
     {{ $slot }}
 
     @persist('toast')
