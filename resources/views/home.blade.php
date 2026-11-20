@@ -82,10 +82,36 @@
                         {{ $menfess->content }}
                     </p>
 
-                    <div class="mt-5 border-t border-pink-100 pt-4">
+                    <div class="mt-5 flex items-center justify-between border-t border-pink-100 pt-4">
+
+                        <form action="{{ route('menfesses.like', $menfess) }}" method="POST">
+                            @csrf
+
+                            <button type="submit"
+                                class="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition
+                                {{ $menfess->likedByUsers->isNotEmpty()
+                                    ? 'bg-pink-100 text-pink-600'
+                                    : 'bg-gray-50 text-gray-500 hover:bg-pink-50 hover:text-pink-500' }}">
+
+                                <span class="text-lg">
+                                    {{ $menfess->likedByUsers->isNotEmpty() ? '♥' : '♡' }}
+                                </span>
+
+                                <span>
+                                    {{ $menfess->likedByUsers->isNotEmpty() ? 'Liked' : 'Like' }}
+                                </span>
+
+                                <span>
+                                    {{ $menfess->likes_count }}
+                                </span>
+
+                            </button>
+                        </form>
+
                         <p class="text-xs text-gray-400">
                             ♡ Be kind and respectful to one another.
                         </p>
+
                     </div>
 
                 </div>

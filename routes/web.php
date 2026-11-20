@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\MenfessController as AdminMenfessController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenfessController;
+use App\Http\Controllers\MenfessLikeController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
@@ -20,6 +21,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/menfess', [MenfessController::class, 'store'])
         ->name('menfesses.store');
+
+    // LIKE MENFESS
+    Route::post('/menfess/{menfess}/like', [MenfessLikeController::class, 'toggle'])
+        ->name('menfesses.like');
 
     // ADMIN SUARAQ
     Route::prefix('admin')

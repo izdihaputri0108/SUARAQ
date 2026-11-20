@@ -6,6 +6,8 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -54,6 +56,23 @@ class User extends Authenticatable implements PasskeyUser
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
+    }
+
+    /**
+     * @return HasMany<MenfessLike, $this>
+     */
+    public function likes(): HasMany
+    {
+        return $this->hasMany(MenfessLike::class);
+    }
+
+    /**
+     * @return BelongsToMany<Menfess, $this>
+     */
+    public function likedMenfesses(): BelongsToMany
+    {
+        return $this->belongsToMany(Menfess::class, 'menfess_likes')
+            ->withTimestamps();
     }
 
     /**

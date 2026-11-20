@@ -10,6 +10,12 @@ class HomeController extends Controller
     public function index(): View
     {
         $menfesses = Menfess::where('status', 'approved')
+            ->withCount('likes')
+            ->with([
+                'likedByUsers' => function ($query) {
+                    $query->whereKey(auth()->id());
+                },
+            ])
             ->latest()
             ->get();
 
