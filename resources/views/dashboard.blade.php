@@ -31,18 +31,16 @@
             font-size: 13px;
         }
 
-        .suraq-dashboard .stat-card {
-            background: white;
-            border: 1px solid #f5dce6;
-            border-radius: 18px;
-            padding: 20px;
+        .suraq-dashboard .create-btn:hover {
+            background: #cc668d;
         }
 
+        .suraq-dashboard .stat-card,
         .suraq-dashboard .feed-card {
             background: white;
             border: 1px solid #f5dce6;
             border-radius: 18px;
-            padding: 22px;
+            padding: 20px;
         }
 
         .suraq-dashboard .topic-card {
@@ -62,6 +60,17 @@
             margin-bottom: 16px;
         }
 
+        .suraq-dashboard .stat-number {
+            color: #493640;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .suraq-dashboard .feed-content {
+            white-space: pre-line;
+            overflow-wrap: anywhere;
+        }
+
         @media (max-width: 640px) {
             .suraq-dashboard .welcome-card {
                 flex-direction: column;
@@ -78,6 +87,7 @@
                 <h1 class="text-2xl font-bold">
                     Hi, {{ auth()->user()->name }}! ♡
                 </h1>
+
                 <p class="muted mt-1 text-sm">
                     Welcome to your little space. What's on your mind today?
                 </p>
@@ -118,27 +128,34 @@
         <section>
             <h2 class="section-title">Your Activity Overview</h2>
 
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
                 <div class="stat-card">
                     <div class="mb-3 text-2xl">📝</div>
-                    <p class="muted text-sm">My Menfess</p>
-                    <h3 class="mt-1 text-2xl font-bold">0</h3>
-                    <p class="muted mt-1 text-xs">Total posts created</p>
+                    <p class="muted text-sm">Total Menfess</p>
+                    <p class="stat-number mt-1">{{ $totalMenfesses }}</p>
+                    <p class="muted mt-2 text-xs">All your submissions</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="mb-3 text-2xl">⏳</div>
+                    <p class="muted text-sm">Waiting Approval</p>
+                    <p class="stat-number mt-1">{{ $pendingMenfesses }}</p>
+                    <p class="muted mt-2 text-xs">Waiting for admin review</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="mb-3 text-2xl">💗</div>
+                    <p class="muted text-sm">Approved Menfess</p>
+                    <p class="stat-number mt-1">{{ $approvedMenfesses }}</p>
+                    <p class="muted mt-2 text-xs">Published in the community</p>
                 </div>
 
                 <div class="stat-card">
                     <div class="mb-3 text-2xl">♡</div>
-                    <p class="muted text-sm">Total Likes</p>
-                    <h3 class="mt-1 text-2xl font-bold">0</h3>
-                    <p class="muted mt-1 text-xs">Likes received</p>
-                </div>
-
-                <div class="stat-card">
-                    <div class="mb-3 text-2xl">💬</div>
-                    <p class="muted text-sm">Comments</p>
-                    <h3 class="mt-1 text-2xl font-bold">0</h3>
-                    <p class="muted mt-1 text-xs">Interactions received</p>
+                    <p class="muted text-sm">Likes Received</p>
+                    <p class="stat-number mt-1">{{ $totalLikes }}</p>
+                    <p class="muted mt-2 text-xs">Likes on your menfesses</p>
                 </div>
 
             </div>
@@ -150,99 +167,124 @@
             <!-- Community Feed -->
             <section class="space-y-4 lg:col-span-2">
 
-                <div class="flex items-center justify-between">
-                    <h2 class="section-title mb-0">Community Feed</h2>
-                    <a href="{{ route('community.home') }}" class="pink-text text-sm font-semibold">
-                        Explore more ♡
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <h2 class="section-title mb-0">
+                        Latest from Community
+                    </h2>
+
+                    <a href="{{ route('community.home') }}"
+                       class="pink-text text-sm font-bold hover:underline">
+                        View All →
                     </a>
                 </div>
 
-                <!-- Sample Menfess -->
-                <article class="feed-card">
-                    <div class="mb-4 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="flex h-11 w-11 items-center justify-center rounded-full bg-pink-100 text-xl">
-                                🌸
+                @forelse ($latestMenfesses as $menfess)
+
+                    <article class="feed-card">
+
+                        <div class="mb-4 flex items-center gap-3">
+
+                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pink-100 text-xl">
+                                {{ $menfess->is_anonymous ? '🌷' : '💗' }}
                             </div>
 
-                            <div>
-                                <h3 class="text-sm font-bold">Anonymous</h3>
-                                <p class="muted text-xs">Student Community · Sample post</p>
+                            <div class="min-w-0">
+                                <h3 class="text-sm font-bold">
+                                    {{ $menfess->is_anonymous ? 'Anonymous' : ($menfess->user?->name ?? 'User') }}
+                                </h3>
+
+                                <p class="muted text-xs">
+                                    {{ $menfess->category ?: 'General' }}
+                                    ·
+                                    {{ $menfess->created_at->diffForHumans() }}
+                                </p>
                             </div>
+
                         </div>
 
-                        <span class="rounded-full bg-pink-50 px-3 py-1 text-xs font-semibold pink-text">
-                            ANONYMOUS
-                        </span>
-                    </div>
+                        <p class="feed-content text-sm leading-7">
+                            {{ $menfess->content }}
+                        </p>
 
-                    <p class="text-sm leading-7">
-                        Sometimes being a student is exhausting.
-                        But remember, everyone has their own journey.
-                        Keep going, you're doing great! ♡
-                    </p>
-
-                    <div class="muted mt-5 flex gap-5 border-t border-pink-100 pt-4 text-xs">
-                        <span>♡ 24 Likes</span>
-                        <span>💬 8 Comments</span>
-                    </div>
-                </article>
-
-                <article class="feed-card">
-                    <div class="mb-4 flex items-center gap-3">
-                        <div class="flex h-11 w-11 items-center justify-center rounded-full bg-pink-100 text-xl">
-                            🌷
+                        <div class="muted mt-5 flex items-center gap-2 border-t border-pink-100 pt-4 text-xs">
+                            <span>♡ {{ $menfess->likes_count }} Likes</span>
                         </div>
 
-                        <div>
-                            <h3 class="text-sm font-bold">Anonymous</h3>
-                            <p class="muted text-xs">Campus Life · Sample post</p>
-                        </div>
+                    </article>
+
+                @empty
+
+                    <div class="feed-card py-10 text-center">
+                        <div class="mb-3 text-4xl">🌸</div>
+
+                        <h3 class="font-bold">
+                            No menfess yet
+                        </h3>
+
+                        <p class="muted mt-2 text-sm">
+                            There are no approved menfesses to show right now.
+                        </p>
+
+                        <a href="{{ route('menfesses.create') }}"
+                           class="create-btn mt-5">
+                            Create the First Menfess
+                        </a>
                     </div>
 
-                    <p class="text-sm leading-7">
-                        To everyone who is working hard for their dreams:
-                        don't forget to take a break and appreciate yourself.
-                        You deserve happiness too. ♡
-                    </p>
-
-                    <div class="muted mt-5 flex gap-5 border-t border-pink-100 pt-4 text-xs">
-                        <span>♡ 16 Likes</span>
-                        <span>💬 5 Comments</span>
-                    </div>
-                </article>
+                @endforelse
 
             </section>
 
             <!-- Right Sidebar -->
             <aside class="space-y-6">
 
+                <!-- Trending Topics -->
                 <section>
-                    <h2 class="section-title">Trending Topics ✨</h2>
+                    <h2 class="section-title">
+                        Trending Topics ✨
+                    </h2>
 
                     <div class="space-y-3">
-                        <div class="topic-card">
-                            <p class="pink-text text-xs font-bold">#01 · TRENDING</p>
-                            <h3 class="mt-2 text-sm font-bold">Campus Life</h3>
-                            <p class="muted mt-1 text-xs">Stories and moments from campus.</p>
-                        </div>
 
-                        <div class="topic-card">
-                            <p class="pink-text text-xs font-bold">#02 · POPULAR</p>
-                            <h3 class="mt-2 text-sm font-bold">Love & Friendship</h3>
-                            <p class="muted mt-1 text-xs">Share your little stories.</p>
-                        </div>
+                        @forelse ($trendingTopics as $index => $topic)
 
-                        <div class="topic-card">
-                            <p class="pink-text text-xs font-bold">#03 · COMMUNITY</p>
-                            <h3 class="mt-2 text-sm font-bold">Academic Talks</h3>
-                            <p class="muted mt-1 text-xs">Discuss study and college life.</p>
-                        </div>
+                            <div class="topic-card">
+
+                                <p class="pink-text text-xs font-bold">
+                                    #{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
+                                    ·
+                                    {{ $index === 0 ? 'TRENDING' : 'POPULAR' }}
+                                </p>
+
+                                <h3 class="mt-2 text-sm font-bold">
+                                    {{ $topic->category }}
+                                </h3>
+
+                                <p class="muted mt-1 text-xs">
+                                    {{ $topic->total }} approved menfess
+                                </p>
+
+                            </div>
+
+                        @empty
+
+                            <div class="topic-card">
+                                <p class="muted text-sm">
+                                    No trending topics yet. Be the first to share your story!
+                                </p>
+                            </div>
+
+                        @endforelse
+
                     </div>
                 </section>
 
+                <!-- Reminder -->
                 <section class="topic-card">
-                    <h2 class="mb-3 font-bold">A Little Reminder ♡</h2>
+                    <h2 class="mb-3 font-bold">
+                        A Little Reminder ♡
+                    </h2>
+
                     <p class="muted text-sm leading-6">
                         Your voice matters. Be kind to yourself and
                         respect other people's stories.

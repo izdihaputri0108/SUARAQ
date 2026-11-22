@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\MenfessController as AdminMenfessController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenfessController;
 use App\Http\Controllers\MenfessLikeController;
@@ -11,8 +12,11 @@ Route::view('/', 'welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    // DASHBOARD
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
 
+    // COMMUNITY FEED
     Route::get('/home', [HomeController::class, 'index'])
         ->name('community.home');
 
@@ -37,7 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->middleware('admin')
         ->group(function () {
 
-            // Moderasi Menfess
+            // MODERASI MENFESS
             Route::get('/menfesses', [AdminMenfessController::class, 'index'])
                 ->name('menfesses.index');
 
@@ -50,7 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/menfesses/{menfess}', [AdminMenfessController::class, 'destroy'])
                 ->name('menfesses.destroy');
 
-            // Manajemen Pengguna
+            // MANAJEMEN PENGGUNA
             Route::get('/users', [UserController::class, 'index'])
                 ->name('users.index');
 

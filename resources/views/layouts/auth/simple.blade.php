@@ -113,7 +113,7 @@
         <div class="auth-container">
             <div class="auth-brand">
                 <a href="{{ route('home') }}" style="text-decoration: none;">
-                    <div class="auth-logo">SUARAQ.</div>
+                    <div class="auth-logo">SUARAQ</div>
                     <div class="auth-tagline">YOUR SPACE, YOUR VOICE ♡</div>
                 </a>
             </div>
