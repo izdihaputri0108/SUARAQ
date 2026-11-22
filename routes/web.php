@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenfessController;
 use App\Http\Controllers\MenfessLikeController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
@@ -34,6 +35,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // LIKE MENFESS
     Route::post('/menfess/{menfess}/like', [MenfessLikeController::class, 'toggle'])
         ->name('menfesses.like');
+
+    // NOTIFICATIONS
+    Route::get('/notifications', [NotificationController::class, 'index'])
+        ->name('notifications.index');
+
+    Route::patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])
+        ->name('notifications.read');
+
+    Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])
+        ->name('notifications.read-all');
 
     // ADMIN SUARAQ
     Route::prefix('admin')

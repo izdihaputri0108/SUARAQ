@@ -40,6 +40,20 @@
             padding: 24px !important;
         }
 
+        .notification-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 20px;
+            background: #df7da1;
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
         @media (max-width: 640px) {
             main {
                 padding: 14px !important;
@@ -112,8 +126,28 @@
                 </flux:sidebar.item>
 
                 <!-- NOTIFICATIONS -->
-                <flux:sidebar.item icon="bell" href="#">
-                    Notifications
+                <flux:sidebar.item
+                    icon="bell"
+                    :href="route('notifications.index')"
+                    :current="request()->routeIs('notifications.*')"
+                    wire:navigate>
+
+                    <span class="flex w-full items-center justify-between gap-2">
+                        <span>Notifications</span>
+
+                        @php
+                            $sidebarUnreadCount = auth()->user()
+                                ->unreadNotifications()
+                                ->count();
+                        @endphp
+
+                        @if ($sidebarUnreadCount > 0)
+                            <span class="notification-count">
+                                {{ $sidebarUnreadCount > 99 ? '99+' : $sidebarUnreadCount }}
+                            </span>
+                        @endif
+                    </span>
+
                 </flux:sidebar.item>
 
                 <!-- MY PROFILE -->

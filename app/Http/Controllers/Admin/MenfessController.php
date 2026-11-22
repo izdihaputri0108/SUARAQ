@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Menfess;
+use App\Notifications\MenfessApproved;
+use App\Notifications\MenfessRejected;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -31,6 +33,15 @@ class MenfessController extends Controller
             'status' => 'approved',
         ]);
 
+        if ($menfess->user) {
+            $menfess->user->notify(
+                new MenfessApproved(
+                    $menfess->id,
+                    (string) $menfess->category
+                )
+            );
+        }
+
         return redirect()
             ->route('admin.menfesses.index')
             ->with('success', 'Menfess berhasil disetujui!');
@@ -44,6 +55,15 @@ class MenfessController extends Controller
         $menfess->update([
             'status' => 'rejected',
         ]);
+
+        if ($menfess->user) {
+            $menfess->user->notify(
+                new MenfessRejected(
+                    $menfess->id,
+                    (string) $menfess->category
+                )
+            );
+        }
 
         return redirect()
             ->route('admin.menfesses.index')
