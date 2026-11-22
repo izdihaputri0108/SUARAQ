@@ -3,15 +3,18 @@
 @endassets
 
 <div
+    class="suraq-passkey-registration"
     x-data="{
         supported: false,
         showForm: false,
         name: '',
         loading: false,
         error: null,
+
         updateSupport() {
             this.supported = Boolean(window.Passkeys?.isSupported());
         },
+
         getDefaultPasskeyName() {
             const ua = navigator.userAgent;
 
@@ -33,12 +36,14 @@
 
             return [browser, os].filter(Boolean).join(' on ') || '';
         },
+
         init() {
             this.name = this.getDefaultPasskeyName();
             this.updateSupport();
 
             window.addEventListener('passkeys:ready', () => this.updateSupport(), { once: true });
         },
+
         async register() {
             if (!this.name.trim()) return;
 
@@ -58,6 +63,7 @@
                 this.loading = false;
             }
         },
+
         cancel() {
             this.showForm = false;
             this.name = '';
@@ -65,8 +71,28 @@
         },
     }"
 >
+    <style>
+        .suraq-passkey-registration button[data-test="add-passkey-button"],
+        .suraq-passkey-registration button[data-test="register-passkey-button"] {
+            background: #d96f9a !important;
+            background-color: #d96f9a !important;
+            border-color: #d96f9a !important;
+            color: #ffffff !important;
+            border-radius: 10px !important;
+        }
+
+        .suraq-passkey-registration button[data-test="add-passkey-button"]:hover,
+        .suraq-passkey-registration button[data-test="register-passkey-button"]:hover {
+            background: #c85d89 !important;
+            background-color: #c85d89 !important;
+            border-color: #c85d89 !important;
+        }
+    </style>
+
     <template x-if="!supported">
-        <flux:text>{{ __('Passkeys are not supported in this browser.') }}</flux:text>
+        <flux:text>
+            {{ __('Passkeys are not supported in this browser.') }}
+        </flux:text>
     </template>
 
     <template x-if="supported && !showForm">
@@ -75,6 +101,7 @@
                 variant="primary"
                 icon="plus"
                 x-on:click="showForm = true"
+                data-test="add-passkey-button"
             >
                 {{ __('Add passkey') }}
             </flux:button>
@@ -82,7 +109,8 @@
     </template>
 
     <template x-if="supported && showForm">
-        <div class="space-y-4 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 p-4">
+        <div class="space-y-4 rounded-lg border border-pink-100 bg-pink-50/50 p-4">
+
             <flux:input
                 label="{{ __('Passkey name') }}"
                 x-model="name"
@@ -91,25 +119,42 @@
                 x-ref="passkeyNameInput"
                 x-init="$nextTick(() => $refs.passkeyNameInput?.focus())"
             />
-            <flux:text class="!mt-1">{{ __('Give this passkey a name to help you identify it later.') }}</flux:text>
 
-            <p x-show="error" x-text="error" x-cloak class="text-sm text-red-600 dark:text-red-400"></p>
+            <flux:text class="!mt-1">
+                {{ __('Give this passkey a name to help you identify it later.') }}
+            </flux:text>
+
+            <p
+                x-show="error"
+                x-text="error"
+                x-cloak
+                class="text-sm text-red-600"
+            ></p>
 
             <div class="flex gap-2">
+
                 <flux:button
                     variant="primary"
                     x-on:click="register()"
                     x-bind:disabled="loading || !name.trim()"
+                    data-test="register-passkey-button"
                 >
-                    <span x-show="!loading">{{ __('Register passkey') }}</span>
-                    <span x-show="loading" x-cloak>{{ __('Registering...') }}</span>
+                    <span x-show="!loading">
+                        {{ __('Register passkey') }}
+                    </span>
+
+                    <span x-show="loading" x-cloak>
+                        {{ __('Registering...') }}
+                    </span>
                 </flux:button>
+
                 <flux:button
                     variant="ghost"
                     x-on:click="cancel()"
                 >
                     {{ __('Cancel') }}
                 </flux:button>
+
             </div>
         </div>
     </template>
