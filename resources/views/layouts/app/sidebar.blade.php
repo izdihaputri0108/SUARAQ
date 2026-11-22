@@ -57,6 +57,7 @@
         <flux:sidebar.header>
             <a href="{{ route('community.home') }}" wire:navigate class="block px-2 py-3">
                 <div class="suraq-brand">SUARAQ.</div>
+
                 <div class="suraq-tagline mt-1">
                     YOUR SPACE, YOUR VOICE ♡
                 </div>
@@ -69,6 +70,7 @@
         <flux:sidebar.nav>
             <flux:sidebar.group heading="MENU UTAMA" class="grid">
 
+                <!-- DASHBOARD -->
                 <flux:sidebar.item
                     icon="home"
                     :href="route('dashboard')"
@@ -77,6 +79,7 @@
                     Dashboard
                 </flux:sidebar.item>
 
+                <!-- HOME -->
                 <flux:sidebar.item
                     icon="home"
                     :href="route('community.home')"
@@ -85,10 +88,12 @@
                     Home
                 </flux:sidebar.item>
 
+                <!-- EXPLORE -->
                 <flux:sidebar.item icon="magnifying-glass" href="#">
                     Explore
                 </flux:sidebar.item>
 
+                <!-- CREATE MENFESS -->
                 <flux:sidebar.item
                     icon="plus-circle"
                     :href="route('menfesses.create')"
@@ -106,12 +111,17 @@
                     My Menfess
                 </flux:sidebar.item>
 
+                <!-- NOTIFICATIONS -->
                 <flux:sidebar.item icon="bell" href="#">
                     Notifications
                 </flux:sidebar.item>
 
                 <!-- MY PROFILE -->
-                <flux:sidebar.item icon="user" href="#">
+                <flux:sidebar.item
+                    icon="user"
+                    :href="route('profile.edit')"
+                    :current="request()->routeIs('profile.edit')"
+                    wire:navigate>
                     My Profile
                 </flux:sidebar.item>
 
@@ -122,7 +132,9 @@
 
         <!-- USER PROFILE -->
         <div class="border-t border-pink-100 px-3 py-4">
+
             <div class="flex items-center gap-3">
+
                 <div class="flex h-10 w-10 items-center justify-center rounded-full bg-pink-100 text-xl">
                     🌷
                 </div>
@@ -131,19 +143,24 @@
                     <p class="truncate text-sm font-bold text-gray-800">
                         {{ auth()->user()->name }}
                     </p>
+
                     <p class="text-xs text-gray-400">
                         Welcome to SUARAQ
                     </p>
                 </div>
+
             </div>
 
             <form method="POST" action="{{ route('logout') }}" class="mt-4">
                 @csrf
-                <button type="submit"
+
+                <button
+                    type="submit"
                     class="w-full rounded-xl border border-pink-100 px-3 py-2 text-left text-sm font-medium text-pink-600 hover:bg-pink-50">
                     Log out
                 </button>
             </form>
+
         </div>
 
     </flux:sidebar>
@@ -151,8 +168,12 @@
     <!-- MOBILE HEADER -->
     <flux:header class="lg:hidden bg-white">
         <flux:sidebar.toggle icon="bars-2" inset="left" />
+
         <flux:spacer />
-        <span class="font-bold text-pink-500">SUARAQ.</span>
+
+        <span class="font-bold text-pink-500">
+            SUARAQ.
+        </span>
     </flux:header>
 
     <!-- SLOT -->
