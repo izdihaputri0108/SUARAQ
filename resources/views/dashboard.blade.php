@@ -1,4 +1,3 @@
-
 <x-layouts::app :title="__('Dashboard')">
 
     <style>
@@ -105,7 +104,7 @@
                     Be yourself and connect with other students.
                 </p>
 
-                <a href="{{ route('home') }}#create-menfess" class="create-btn mt-5">
+                <a href="{{ route('menfesses.create') }}" class="create-btn mt-5">
                     + Create Menfess
                 </a>
             </div>
@@ -153,7 +152,7 @@
 
                 <div class="flex items-center justify-between">
                     <h2 class="section-title mb-0">Community Feed</h2>
-                    <a href="{{ route('home') }}" class="pink-text text-sm font-semibold">
+                    <a href="{{ route('community.home') }}" class="pink-text text-sm font-semibold">
                         Explore more ♡
                     </a>
                 </div>

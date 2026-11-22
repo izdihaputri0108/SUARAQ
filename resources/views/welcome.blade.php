@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -222,6 +221,7 @@
         }
 
         .hero-button {
+            display: inline-block;
             margin-top: 19px;
             background: var(--pink-dark);
             color: white;
@@ -230,6 +230,12 @@
             padding: 11px 19px;
             font-size: 12px;
             font-weight: 700;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .hero-button:hover {
+            background: #c9678e;
         }
 
         /* FEED */
@@ -543,9 +549,10 @@
                 Be yourself, speak freely, and connect with others.
             </p>
 
-            <button class="hero-button" onclick="alert('Fitur buat menfess akan segera hadir!')">
+            <!-- CREATE MENFESS -->
+            <a href="{{ route('menfesses.create') }}" class="hero-button">
                 + Create Menfess
-            </button>
+            </a>
         </section>
 
         <!-- FEED -->

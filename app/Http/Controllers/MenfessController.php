@@ -6,9 +6,11 @@ use App\Models\Menfess;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class MenfessController extends Controller
 {
+    // Menyimpan menfess baru
     public function store(Request $request): RedirectResponse
     {
         // Memeriksa data yang dikirim dari form
@@ -30,6 +32,16 @@ class MenfessController extends Controller
         // Kembali ke halaman Create Menfess
         return redirect()
             ->route('menfesses.create')
-            ->with('success', 'Menfess berhasil dikirim! Menunggu persetujuan admin ♡');
+            ->with('success', 'Menfess berhasil dikirim! Menunggu persetujuan admin.');
+    }
+
+    // Menampilkan riwayat menfess milik pengguna
+    public function myMenfesses(): View
+    {
+        $menfesses = Menfess::where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return view('menfesses.my', compact('menfesses'));
     }
 }

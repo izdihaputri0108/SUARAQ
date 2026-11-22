@@ -16,11 +16,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])
         ->name('community.home');
 
+    // CREATE MENFESS
     Route::view('/menfess/create', 'menfesses.create')
         ->name('menfesses.create');
 
     Route::post('/menfess', [MenfessController::class, 'store'])
         ->name('menfesses.store');
+
+    // MY MENFESS
+    Route::get('/my-menfesses', [MenfessController::class, 'myMenfesses'])
+        ->name('menfesses.my');
 
     // LIKE MENFESS
     Route::post('/menfess/{menfess}/like', [MenfessLikeController::class, 'toggle'])
@@ -53,5 +58,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->name('users.destroy');
         });
 });
-
-require __DIR__.'/settings.php';

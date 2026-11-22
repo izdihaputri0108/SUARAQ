@@ -97,7 +97,12 @@
                     Create Menfess
                 </flux:sidebar.item>
 
-                <flux:sidebar.item icon="heart" href="#">
+                <!-- MY MENFESS -->
+                <flux:sidebar.item
+                    icon="heart"
+                    :href="route('menfesses.my')"
+                    :current="request()->routeIs('menfesses.my')"
+                    wire:navigate>
                     My Menfess
                 </flux:sidebar.item>
 
@@ -105,11 +110,8 @@
                     Notifications
                 </flux:sidebar.item>
 
-                <flux:sidebar.item
-                    icon="user"
-                    :href="route('profile.edit')"
-                    :current="request()->routeIs('profile.*')"
-                    wire:navigate>
+                <!-- MY PROFILE -->
+                <flux:sidebar.item icon="user" href="#">
                     My Profile
                 </flux:sidebar.item>
 
