@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\MenfessController as AdminMenfessController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DetailMenfessController;
 use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenfessController;
@@ -32,6 +33,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/menfess', [MenfessController::class, 'store'])
         ->name('menfesses.store');
+
+    // DETAIL MENFESS
+    Route::get('/menfess/{menfess}', [DetailMenfessController::class, 'show'])
+        ->whereNumber('menfess')
+        ->name('menfesses.show');
 
     // MY MENFESS
     Route::get('/my-menfesses', [MenfessController::class, 'myMenfesses'])

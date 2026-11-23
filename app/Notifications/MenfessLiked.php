@@ -34,7 +34,7 @@ class MenfessLiked extends Notification
             'message' => 'Seseorang menyukai menfess yang kamu bagikan.',
             'menfess_id' => $this->menfessId,
             'category' => $this->category,
-            'url' => route('menfesses.my'),
+            'url' => route('menfesses.show', $this->menfessId),
         ];
     }
 }

@@ -34,7 +34,7 @@ class MenfessApproved extends Notification
             'message' => 'Menfess kamu berhasil disetujui admin dan sekarang sudah tampil di Community Feed.',
             'menfess_id' => $this->menfessId,
             'category' => $this->category,
-            'url' => route('menfesses.my'),
+            'url' => route('menfesses.show', $this->menfessId),
         ];
     }
 }

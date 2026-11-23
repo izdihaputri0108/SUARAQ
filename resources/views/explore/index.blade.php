@@ -72,7 +72,7 @@
 
                         <button
                             type="submit"
-                            style="display: inline-flex; align-items: center; justify-content: center; background-color: #df7da3; color: white; padding: 10px 24px; border-radius: 9999px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: background-color 0.2s;"
+                            style="display: inline-flex; align-items: center; justify-content: center; background-color: #df7da3; color: white; padding: 10px 24px; border-radius: 9999px; font-size: 14px; font-weight: 600; border: none; cursor: pointer;"
                         >
                             Search
                         </button>
@@ -150,6 +150,17 @@
                         {{ $menfess->content }}
                     </p>
 
+                    {{-- VIEW DETAILS --}}
+                    <div class="mt-4">
+                        <a
+                            href="{{ route('menfesses.show', $menfess) }}"
+                            class="inline-flex items-center gap-2 text-sm font-semibold text-pink-500 transition hover:text-pink-700"
+                        >
+                            View Details
+                            <span>→</span>
+                        </a>
+                    </div>
+
                     {{-- LIKE SECTION --}}
                     <div class="mt-5 flex items-center justify-between border-t border-pink-100 pt-4">
 
@@ -163,7 +174,6 @@
                                     ? 'bg-pink-100 text-pink-600'
                                     : 'bg-gray-50 text-gray-500 hover:bg-pink-50 hover:text-pink-500' }}"
                             >
-
                                 <span class="text-lg">
                                     {{ $menfess->likedByUsers->isNotEmpty() ? '♥' : '♡' }}
                                 </span>
@@ -175,7 +185,6 @@
                                 <span>
                                     {{ $menfess->likes_count }}
                                 </span>
-
                             </button>
                         </form>
 

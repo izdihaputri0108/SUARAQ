@@ -163,6 +163,17 @@
                     My Profile
                 </flux:sidebar.item>
 
+                <!-- ADMIN MENU -->
+                @if (auth()->user()->role === 'admin')
+                    <flux:sidebar.item
+                        icon="shield-check"
+                        :href="route('admin.menfesses.index')"
+                        :current="request()->routeIs('admin.menfesses.*')"
+                        wire:navigate>
+                        Moderasi Menfess
+                    </flux:sidebar.item>
+                @endif
+
             </flux:sidebar.group>
         </flux:sidebar.nav>
 

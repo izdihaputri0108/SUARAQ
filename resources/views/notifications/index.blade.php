@@ -56,10 +56,22 @@
                 min-width: 0;
             }
 
+            .suraq-notifications .notification-link {
+                display: block;
+                color: inherit;
+                text-decoration: none;
+                border-radius: 8px;
+            }
+
+            .suraq-notifications .notification-link:hover .notification-title {
+                color: #d9799d;
+            }
+
             .suraq-notifications .notification-title {
                 font-weight: 700;
                 font-size: 15px;
                 margin-bottom: 5px;
+                transition: color 0.2s;
             }
 
             .suraq-notifications .notification-message {
@@ -191,6 +203,12 @@
         <!-- NOTIFICATIONS -->
         @forelse ($notifications as $notification)
 
+            @php
+                $detailUrl = !empty($notification->data['menfess_id'])
+                    ? route('menfesses.show', $notification->data['menfess_id'])
+                    : ($notification->data['url'] ?? route('notifications.index'));
+            @endphp
+
             <div class="notification-card {{ $notification->read_at ? '' : 'unread' }}">
 
                 <div class="notification-icon">
@@ -204,31 +222,36 @@
                 </div>
 
                 <div class="notification-content">
-                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        <div class="notification-title">
-                            {{ $notification->data['title'] ?? 'New Notification' }}
+
+                    <a href="{{ $detailUrl }}" class="notification-link">
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
+                            <div class="notification-title">
+                                {{ $notification->data['title'] ?? 'New Notification' }}
+                            </div>
+
+                            @if ($notification->read_at)
+                                <span class="read-badge">Read</span>
+                            @else
+                                <span class="unread-badge">New</span>
+                            @endif
                         </div>
 
-                        @if ($notification->read_at)
-                            <span class="read-badge">Read</span>
-                        @else
-                            <span class="unread-badge">New</span>
+                        <div class="notification-message">
+                            {{ $notification->data['message'] ?? 'You have a new notification.' }}
+                        </div>
+
+                        @if (!empty($notification->data['category']))
+                            <div class="notification-time">
+                                Category: {{ $notification->data['category'] }}
+                            </div>
                         @endif
-                    </div>
 
-                    <div class="notification-message">
-                        {{ $notification->data['message'] ?? 'You have a new notification.' }}
-                    </div>
-
-                    @if (!empty($notification->data['category']))
                         <div class="notification-time">
-                            Category: {{ $notification->data['category'] }}
+                            {{ $notification->created_at->diffForHumans() }}
                         </div>
-                    @endif
 
-                    <div class="notification-time">
-                        {{ $notification->created_at->diffForHumans() }}
-                    </div>
+                    </a>
 
                     @if (!$notification->read_at)
                         <form action="{{ route('notifications.read', $notification->id) }}" method="POST" style="margin-top: 12px;">
@@ -240,6 +263,7 @@
                             </button>
                         </form>
                     @endif
+
                 </div>
 
             </div>

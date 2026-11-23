@@ -34,7 +34,7 @@ class MenfessRejected extends Notification
             'message' => 'Maaf, menfess kamu belum dapat disetujui oleh admin.',
             'menfess_id' => $this->menfessId,
             'category' => $this->category,
-            'url' => route('menfesses.my'),
+            'url' => route('menfesses.show', $this->menfessId),
         ];
     }
 }
