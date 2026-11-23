@@ -18,6 +18,8 @@ class MenfessRejected extends Notification
 
     /**
      * Menentukan saluran pengiriman notifikasi.
+     *
+     * @return array<int, string>
      */
     public function via(object $notifiable): array
     {
@@ -26,6 +28,8 @@ class MenfessRejected extends Notification
 
     /**
      * Menentukan data yang disimpan ke database.
+     *
+     * @return array<string, mixed>
      */
     public function toArray(object $notifiable): array
     {

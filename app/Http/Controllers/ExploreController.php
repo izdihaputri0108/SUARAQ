@@ -28,16 +28,16 @@ class ExploreController extends Controller
                 },
             ]);
 
-        if (!empty($validated['search'])) {
+        if (! empty($validated['search'])) {
             $search = $validated['search'];
 
             $query->where(function ($query) use ($search) {
-                $query->where('content', 'like', '%' . $search . '%')
-                    ->orWhere('category', 'like', '%' . $search . '%');
+                $query->where('content', 'like', '%'.$search.'%')
+                    ->orWhere('category', 'like', '%'.$search.'%');
             });
         }
 
-        if (!empty($validated['category'])) {
+        if (! empty($validated['category'])) {
             $query->where('category', $validated['category']);
         }
 
