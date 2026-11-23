@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\MenfessController as AdminMenfessController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenfessController;
 use App\Http\Controllers\MenfessLikeController;
@@ -20,6 +21,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // COMMUNITY FEED
     Route::get('/home', [HomeController::class, 'index'])
         ->name('community.home');
+
+    // EXPLORE
+    Route::get('/explore', [ExploreController::class, 'index'])
+        ->name('explore.index');
 
     // CREATE MENFESS
     Route::view('/menfess/create', 'menfesses.create')

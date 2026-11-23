@@ -103,7 +103,11 @@
                 </flux:sidebar.item>
 
                 <!-- EXPLORE -->
-                <flux:sidebar.item icon="magnifying-glass" href="#">
+                <flux:sidebar.item
+                    icon="magnifying-glass"
+                    :href="route('explore.index')"
+                    :current="request()->routeIs('explore.*')"
+                    wire:navigate>
                     Explore
                 </flux:sidebar.item>
 
